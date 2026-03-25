@@ -1,5 +1,7 @@
 # NBA Schedule Analysis
 
+Walkthrough with all plots: https://nepalanurag.github.io/nba-schedule-analysis/
+
 I worked through an NBA data science problem using game-level team data and full season schedules.
 
 Note on reproducibility: the source CSVs (`team_game_data.csv`, `schedule.csv`, `schedule_24_partial.csv`, `locations.csv`) are proprietary scheduling data and are not in this repo, so the Rmd cannot be re-run as-is. The rendered HTML below is the archived output of the completed analysis.
