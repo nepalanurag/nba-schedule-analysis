@@ -7,7 +7,7 @@ date: "`r format(Sys.Date(), '%m/%d/%y')`"
 
 ```{r set options, include=FALSE}
 # DO NOT CHANGE THE LINE BELOW 
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 ```
 
 ``` {css styling, echo=FALSE}
@@ -44,47 +44,15 @@ htmltools::img(src = 'https://cdn.nba.com/logos/nba/1610612760/primary/L/logo.sv
 ```
 
 
-# Introduction  
+# Background
 
-The purpose of this project is to gauge your technical skills and problem solving ability by working through something similar to a real NBA data science project. You will work your way through this R Markdown document, answering questions as you go along. Please begin by adding your name to the "author" key in the YAML header. When you're finished with the document, come back and type your answers into the answer key at the top. Please leave all your work below and have your answers where indicated below as well. Please note that we will be reviewing your code so make it clear, concise, and **avoid long printouts.** Feel free to add in as many new code chunks as you'd like.
+I worked through an NBA data science exercise built on game-level team data and full season schedules. The questions are the exercise's: how dense NBA schedules get, how scheduling changed over the last decade, and whether schedule quirks actually cost or gift teams wins. The work below answers them in order, with the results collected in the answer key at the end.
 
-Remember that we will be grading the quality of your code and visuals alongside the correctness of your answers. Please try to use the tidyverse as much as possible (instead of base R and explicit loops). Please do not bring in any outside data, and use the provided data as truth (for example, some "home" games have been played at secondary locations, including TOR's entire 2020-21 season. These are not reflected in the data and you do not need to account for this.) Note that the OKC and DEN 2024-25 schedules in `schedule_24_partial.csv` intentionally include only 80 games, as the league holds 2 games out for each team in the middle of December due to unknown NBA Cup matchups. Do not assign specific games to fill those two slots.      
+A few notes on the data. Any `season` column holds the year the season started, so 2015 means 2015-16. The OKC and DEN 2024-25 draft schedules in `schedule_24_partial.csv` intentionally hold only 80 games, because the league leaves 2 games open in mid-December for NBA Cup matchups. Some "home" games were played at secondary locations (including TOR's entire 2020-21 season); the data does not reflect that, and I did not adjust for it.
 
-**Note:**    
+# Setup
 
-**Throughout this document, any `season` column represents the year each season started. For example, the 2015-16 season will be in the dataset as 2015. We may refer to a season by just this number (e.g. 2015) instead of the full text (e.g. 2015-16).**   
-
-<h1 class="red-header">Answers</h1>  
-
-## Part 1      
-
-**Question 1:** 26 4-in-6 stretches in OKC's draft schedule.   
-
-**Question 2:** 25.1 4-in-6 stretches on average.  
-
-**Question 3:**    
-
-- Most 4-in-6 stretches on average: CHA (28.1)   
-- Fewest 4-in-6 stretches on average: NYK (22.2)    
-
-**Question 4:** This is a written question. Please leave your response in the document under Question 4.          
-
-**Question 5:**   
-
-- BKN Defensive eFG%:  54.3%   
-- When opponent on a B2B: 53.5%    
-
-## Part 2  
-
-Please show your work in the document, you don't need anything here.     
-
-## Part 3    
- 
-**Question 9:**    
-- Most Helped by Schedule: MIL (0.71 wins)     
-- Most Hurt by Schedule: DEN (-1.03 wins)           
-
-# Setup and Data    
+The source CSVs (`team_game_data.csv`, `schedule.csv`, `schedule_24_partial.csv`, `locations.csv`) are proprietary scheduling data and are not in this repo. The data dictionary is in `data_dictionary.txt`. What follows was run against those files; the rendered HTML in this repo is the archived output.    
 
 ```{r load data, message = F, warning = F}
 library(tidyverse)
@@ -101,7 +69,7 @@ game_data <- read_csv("team_game_data.csv")
 ```
 
 
-## Part 1 -- Schedule Analysis               
+## Method: schedule structure               
 
 In this section, you're going to work to answer questions using NBA scheduling data.   
 
@@ -223,7 +191,7 @@ least_4in6 <- team_4in6_summary %>% slice(n())
 
 <span style="color:red">**ANSWER 4:**</span>   
 
-The difference of about six 4-in-6 stretches between Charlotte (28.1) and New York (22.2) over the 2014–15 to 2023–24 seasons isn’t especially surprising. The NBA schedule is not perfectly balanced, and factors like arena availability, travel logistics, and regional clustering can create modest disparities in how many compressed stretches teams face. Over a long horizon of ten seasons, a gap of roughly half a dozen 4-in-6 segments per year is noticeable but still within the kind of variation that could occur by chance when the league is trying to satisfy many scheduling constraints. In other words, while it does highlight that some teams have slightly tougher schedules, the magnitude of the difference is small enough that it seems more like a product of scheduling quirks than systematic bias.
+The gap of about six 4-in-6 stretches between Charlotte (28.1) and New York (22.2) over ten seasons is not surprising. The schedule is not perfectly balanced: arena availability, travel logistics, and regional clustering all create small disparities. Over a decade, a gap of half a dozen compressed stretches per year is noticeable but looks like scheduling quirks, not systematic bias.
 
 ### Question 5   
 
@@ -270,7 +238,7 @@ bkn_def_efg_b2b
 - BKN Defensive eFG%: `r round(bkn_def_efg*100,1)`%   
 - When opponent on a B2B: `r round(bkn_def_efg_b2b*100,1)`%  
 
-## Part 2 -- Trends and Visualizations                   
+## Method: trends and schedule visualization                   
 
 
 This is an intentionally open ended section, and there are multiple approaches you could take to have a successful project. Feel free to be creative. However, for this section, please consider only the density of games and travel schedule, not the relative on-court strength of different teams.    
@@ -329,11 +297,9 @@ ggplotly(trend1_plot,tooltip = "text")
 
 Some findings from the plot:
 
-1.**Initial Decline (2014-2019)**: There was a general downward trend, with the average number of back-to-back games per team decreasing from around 18 in 2014 to a low of approximately 12 in 2019. This can suggest that there was an effort to reduce the frequency of back-to-back games for teams over this period.
-
-2.**Significant Spike in 2020**: The trend sharply reversed in 2020, showing a substantial increase to about 17 back-to-back games per team. This spike could be attributed to a condensed schedule or other unique circumstances during that season, potentially related to the pandemic.
-
-3.**Post-2020 Fluctuations**: After the 2020 peak, the number decreased in 2021 to around 14 and then slightly rose again in 2023 to approximately 15.This indicates that while the number of back-to-back games did not return to the 2019 low, it also did not sustain the 2020 peak.
+1. **Decline, 2014 to 2019.** Back-to-backs fell from around 18 per team to about 12. The league was clearly trying to reduce them.
+2. **Spike in 2020.** They jumped back to about 17. That was the condensed pandemic schedule.
+3. **Settling after 2020.** Down to around 14 in 2021, then up a bit to about 15 in 2023. Never back to the 2019 low.
 
 ### Question 7    
 
@@ -454,7 +420,7 @@ A significant 11 day break in early December stands out, offering crucial mid-se
 **Worst Part: Demanding stretches with minimal rest**
 November, and January have a packed schedule where there are many games every week with some back to back games as well. These periods will test player endurance with consistently short rest, potentially increasing fatigue and injury risk.
 
-## Part 3 -- Modeling     
+## Method: schedule effect on wins     
 
 ### Question 9   
 
@@ -762,7 +728,7 @@ summary(fit_tz)
 ```
 I fit a basic linear regression model (fit_tz) to predict the probability of a team winning a game from the 2019–20 through 2023–24 regular seasons. The dependent variable is whether the offensive team won (win), and I included predictors that capture both team strength and schedule effects. Team ability was measured using season-to-date offensive eFG% edge and defensive eFG% edge, each calculated with leave-one-out smoothing against the league average. To capture the impact of scheduling, I added variables for rest days , back-to-backs, 3-in-4 and 4-in-6 situations, travel distance, cumulative travel, rest differentials, and some interactions between the travel and rest variables.
 
-The regression summary shows that team quality variables dominate the prediction: both offensive and defensive eFG% advantages have extremely large, highly significant effects on the odds of winning. As expected, home-court advantage also increases win probability. In contrast, most of the schedule-related variables—such as rest days, travel distance, and cumulative travel—have much weaker or statistically insignificant effects, though there is some evidence that back-to-back games and playing after a 4-in-6 with extra travel can negatively impact performance specially when the opponent team is better rested. Overall, the model suggests that shooting efficiency edges and home court are the strongest determinants of game outcomes, while schedule congestion and travel have smaller, less consistent impacts. But the model is not capturing all the variance, I might still be missing some parameters or the data is too complex jsut for a regression model and I need to try better ones.
+The regression summary shows that team quality variables dominate the prediction: both offensive and defensive eFG% advantages have extremely large, highly significant effects on the odds of winning. As expected, home-court advantage also increases win probability. In contrast, most of the schedule-related variables—such as rest days, travel distance, and cumulative travel—have much weaker or statistically insignificant effects, though there is some evidence that back-to-back games and playing after a 4-in-6 with extra travel can negatively impact performance specially when the opponent team is better rested. Overall, the model suggests that shooting efficiency edges and home court are the strongest determinants of game outcomes, while schedule congestion and travel have smaller, less consistent impacts. But the model is not capturing all the variance, I might still be missing some parameters or the data is too complex just for a regression model and I need to try better ones.
 
 ```{r}
 # Actual predictions
@@ -887,6 +853,40 @@ By comparing these counterfactual predictions with the actual observed outcomes,
 <span style="color:red">**ANSWER 9:**</span>    
 
 - Most Helped by Schedule: MIL (0.71 wins)     
-- Most Hurt by Schedule: DEN (-1.03 wins)     
+- Most Hurt by Schedule: DEN (-1.03 wins)
 
+# Results
 
+The full work for each answer is in the sections above. The short version:  
+
+## Part 1      
+
+**Question 1:** 26 4-in-6 stretches in OKC's draft schedule.   
+
+**Question 2:** 25.1 4-in-6 stretches on average.  
+
+**Question 3:**    
+
+- Most 4-in-6 stretches on average: CHA (28.1)   
+- Fewest 4-in-6 stretches on average: NYK (22.2)    
+
+**Question 4:** This is a written question. Please leave your response in the document under Question 4.          
+
+**Question 5:**   
+
+- BKN Defensive eFG%:  54.3%   
+- When opponent on a B2B: 53.5%    
+
+## Part 2  
+
+Please show your work in the document, you don't need anything here.     
+
+## Part 3    
+ 
+**Question 9:**    
+- Most Helped by Schedule: MIL (0.71 wins)     
+- Most Hurt by Schedule: DEN (-1.03 wins)
+
+# Takeaway
+
+Schedule effects are real but small next to team quality. The regression says shooting efficiency edges and home court dominate win probability, while rest and travel nibble at the margins. Over five seasons the luckiest schedule (MIL, +0.71 wins) and the unluckiest (DEN, -1.03) differ by under two wins total. The decade trend is kinder scheduling: back-to-backs fell by a third from 2014 to 2019 before the pandemic season undid some of that progress.
