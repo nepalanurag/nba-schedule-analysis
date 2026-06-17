@@ -11,7 +11,8 @@ Using the tidyverse in R, I analyzed team performance across seasons, home/away 
 ## Files
 
 - `nba-schedule-analysis.Rmd` - the analysis
-- `nba-schedule-analysis.ipynb` / `nba-schedule-analysis.html` - rendered versions with all outputs
+- `nba-schedule-analysis.ipynb` - write-up of the completed analysis with all answers (code cells are template placeholders; the full implementation is in the Rmd)
+- `nba-schedule-analysis.html` - rendered Rmd with all outputs
 - `data_dictionary.txt` - column definitions
 
 The raw data files are proprietary and not included here. Everything the analysis found is visible in the rendered HTML.
