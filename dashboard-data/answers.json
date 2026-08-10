@@ -1,0 +1,35 @@
+{
+ "q1_4in6_okc_draft": {
+  "answer": 26,
+  "unit": "4-in-6 stretches in OKC's 80-game 2024-25 draft schedule"
+ },
+ "q2_avg_4in6_per_season": {
+  "answer": 25.1,
+  "unit": "per-82-game-adjusted, 2014-15 to 2023-24"
+ },
+ "q3_teams": {
+  "most": {
+   "team": "CHA",
+   "avg_per_82": 28.1
+  },
+  "fewest": {
+   "team": "NYK",
+   "avg_per_82": 22.2
+  }
+ },
+ "q5_bkn_def_efg_2023_24": {
+  "overall_pct": 54.3,
+  "opp_on_back_to_back_pct": 53.5
+ },
+ "q9_schedule_wins_2019_2024": {
+  "most_helped": {
+   "team": "MIL",
+   "wins": 0.71
+  },
+  "most_hurt": {
+   "team": "DEN",
+   "wins": -1.03
+  },
+  "note": "total wins vs neutral schedule, 2019-20 through 2023-24"
+ }
+}
