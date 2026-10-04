@@ -16,14 +16,6 @@ date: "`r format(Sys.Date(), '%m/%d/%y')`"
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, fig.align = "center")
 ```
 
-```{r logo, echo = FALSE}
-
-htmltools::img(src = 'https://cdn.nba.com/logos/nba/1610612760/primary/L/logo.svg',
-                height = '220px',
-                alt = 'logo',
-                style = 'display: block; margin: 0 auto 8px;')
-```
-
 
 # Background
 
