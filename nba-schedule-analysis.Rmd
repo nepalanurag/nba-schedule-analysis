@@ -1,46 +1,27 @@
 ---
 title: 'NBA Schedule Analysis'
-output: html_document
+output:
+  html_document:
+    toc: true
+    css: blog.css
+    includes:
+      before_body: nav.html
+      after_body: footer.html
 author: "Anurag Nepal"
 date: "`r format(Sys.Date(), '%m/%d/%y')`"
 ---
 
 ```{r set options, include=FALSE}
 # DO NOT CHANGE THE LINE BELOW 
-knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
-```
-
-``` {css styling, echo=FALSE}
-
-<style>
-.tocify {
-max-width: 175px !important;
-}
-</style>
-
-<style>
-.main-container {
-width: 100%;
-max-width: 940px;
-margin-left: 250px;
-margin-right: auto;
-}
-</style>
-
-<style>
-.red-header {
-  color: red;
-}
-</style>
-
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, fig.align = "center")
 ```
 
 ```{r logo, echo = FALSE}
 
 htmltools::img(src = 'https://cdn.nba.com/logos/nba/1610612760/primary/L/logo.svg',
-                height = '250px',
+                height = '220px',
                 alt = 'logo',
-                style = 'position: fixed; top: -40px; left: 5px;')
+                style = 'display: block; margin: 0 auto 8px;')
 ```
 
 
